@@ -3,6 +3,7 @@ import { FiPlus } from 'react-icons/fi'
 import { PageTitle, TextEditor } from '../../../core/components'
 import * as S from './styles'
 import { FormEvent, useState } from 'react'
+import { TodoService } from '../../../../services/todoService'
 
 export const Header = () => {
     const [isVisible, setIsVisible] = useState(true)
@@ -12,10 +13,9 @@ export const Header = () => {
         setIsVisible(false)
     }
 
-    const handleSubmit = (e: FormEvent) => {
-        e.preventDefault()
+    const handleSubmit = async (e: any) => {
+        await TodoService.createTodo({ content: e.target.value, isComplete: false })
         setIsVisible(true)
-        console.log(value)
     }
     return (
         <S.Main>

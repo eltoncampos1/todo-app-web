@@ -3,6 +3,7 @@ import * as S from './styles'
 import update from "immutability-helper";
 import { Card } from "../Card";
 import { api } from "../../../../services/api";
+import { Response, Todo, TodoService } from "../../../../services/todoService";
 
 
 export interface Item {
@@ -19,15 +20,20 @@ type ListProps = {
 }
 
 export const List: FC<ListProps> = ({ name }) => {
-    const [cards, setCards] = useState([]);
+    const [cards, setCards] = useState<Todo[]>([
+        {
+            id: '',
+            content: '',
+            isComplete: false
+        }
+    ]);
 
     useEffect(() => {
         (async () => {
 
-            const todos = await api.get('/list')
-            setCards(todos.data)
+            const todos = await TodoService.getTodos()
+            setCards(todos as any)
         })()
-
     }, [])
 
     const moveCard = useCallback(
@@ -45,7 +51,7 @@ export const List: FC<ListProps> = ({ name }) => {
         [cards]
     );
 
-    const renderCard = (card: { id: number; content: string }, index: number) => {
+    const renderCard = (card: Todo, index: number) => {
         return (
             <Card
                 key={card.id}
