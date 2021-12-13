@@ -1,12 +1,14 @@
 import { useState } from 'react'
+import { Layout } from './systems/core/components'
+import { Main } from './systems/Main'
+import { Header } from './systems/header/components'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div >
-      hello
-    </div>
+    <Layout title='Todo App'>
+      <Header />
+      <Main />
+    </Layout>
   )
 }
 

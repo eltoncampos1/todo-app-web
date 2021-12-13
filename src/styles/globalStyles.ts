@@ -1,12 +1,15 @@
 import { createGlobalStyle } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
-    body {
+    * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+    }
+    
+    body {
         font-family: 'Inter', sans-serif;
-        background:#313131;
+        background:#e5e5e5;
     }
 `
 
