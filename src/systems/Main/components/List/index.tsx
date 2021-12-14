@@ -1,9 +1,9 @@
 import { FC, useState, useCallback, useEffect } from "react";
 import * as S from './styles'
-import update from "immutability-helper";
 import { Card } from "../Card";
 import { api } from "../../../../services/api";
 import { Response, Todo, TodoService } from "../../../../services/todoService";
+import { useTodos } from "../../../../context/todoContext";
 
 
 export interface Item {
@@ -20,40 +20,12 @@ type ListProps = {
 }
 
 export const List: FC<ListProps> = ({ name }) => {
-    const [cards, setCards] = useState<Todo[]>([
-        {
-            id: '',
-            content: '',
-            isComplete: false
-        }
-    ]);
-
-    useEffect(() => {
-        (async () => {
-
-            const todos = await TodoService.getTodos()
-            setCards(todos as any)
-        })()
-    }, [])
-
-    const moveCard = useCallback(
-        (dragIndex: number, hoverIndex: number) => {
-            const dragCard = cards[dragIndex];
-            setCards(
-                update(cards, {
-                    $splice: [
-                        [dragIndex, 1],
-                        [hoverIndex, 0, dragCard]
-                    ]
-                })
-            );
-        },
-        [cards]
-    );
+    const { todos, deleteTodo, moveCard } = useTodos()
 
     const renderCard = (card: Todo, index: number) => {
         return (
             <Card
+                onDelete={() => deleteTodo(card.id)}
                 key={card.id}
                 index={index}
                 id={card.id}
@@ -67,7 +39,8 @@ export const List: FC<ListProps> = ({ name }) => {
         <>
             <S.Container >
                 <S.Title>{name}</S.Title>
-                {cards && cards.map((card, i) => renderCard(card, i))}
+                {!todos.length && <p>Inicie sua nova tarefa clicando no botão acima</p>}
+                {todos && todos.map((todo, i) => renderCard(todo, i))}
             </S.Container>
         </>
     );

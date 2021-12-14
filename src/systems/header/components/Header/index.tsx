@@ -3,20 +3,27 @@ import { FiPlus } from 'react-icons/fi'
 import { PageTitle, TextEditor } from '../../../core/components'
 import * as S from './styles'
 import { FormEvent, useState } from 'react'
-import { TodoService } from '../../../../services/todoService'
+
+import { useTodos } from '../../../../context/todoContext'
+
+
 
 export const Header = () => {
+    const { handleSubmit } = useTodos()
     const [isVisible, setIsVisible] = useState(true)
     const [value, setValue] = useState('')
+
+    const onSubmit = (e: FormEvent) => {
+        handleSubmit(e, value)
+        setIsVisible(true)
+        setValue('')
+    }
 
     const handleCLick = () => {
         setIsVisible(false)
     }
 
-    const handleSubmit = async (e: any) => {
-        await TodoService.createTodo({ content: e.target.value, isComplete: false })
-        setIsVisible(true)
-    }
+
     return (
         <S.Main>
             <S.Container>
@@ -32,7 +39,7 @@ export const Header = () => {
                 ) : (
                     <>
                         <TextEditor
-                            onSubmit={(e) => handleSubmit(e)}
+                            onSubmit={(e) => onSubmit(e)}
                             value={value}
                             onChange={(e) => setValue(e.target.value)}
                         />

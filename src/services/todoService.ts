@@ -23,6 +23,9 @@ const TodoService = {
     },
     createTodo: async (data: Payload): Promise<void> => {
         await api.post('/create', data)
+    },
+    deleteTodo: async (todoId: string): Promise<void> => {
+        await api.delete(`/delete/${todoId}`)
     }
 }
 

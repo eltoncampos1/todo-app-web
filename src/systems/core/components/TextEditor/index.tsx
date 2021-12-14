@@ -2,7 +2,7 @@ import { FormEvent } from 'react'
 import * as S from './styles'
 
 type TextEditorProps = {
-    onSubmit: (e: FormEvent) => void;
+    onSubmit: (e: any) => void;
     onChange: (e: any) => void;
     value: string;
 }
