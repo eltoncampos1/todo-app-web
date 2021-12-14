@@ -6,7 +6,7 @@ export type Todo = {
     isComplete?: boolean;
 }
 
-type Payload = {
+export type Payload = {
     content: string;
     isComplete?: boolean;
 }
@@ -26,6 +26,9 @@ const TodoService = {
     },
     deleteTodo: async (todoId: string): Promise<void> => {
         await api.delete(`/delete/${todoId}`)
+    },
+    updateTodo: async (todoId: string, data: Payload): Promise<void> => {
+        await api.patch(`/update/${todoId}`, data)
     }
 }
 

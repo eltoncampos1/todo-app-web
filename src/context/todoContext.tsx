@@ -1,5 +1,5 @@
 import { createContext, FormEvent, ReactNode, useCallback, useContext, useEffect, useState } from "react";
-import { Todo, TodoService } from "../services/todoService";
+import { Payload, Todo, TodoService } from "../services/todoService";
 import update from "immutability-helper";
 type TodoProviderProps = {
     children: ReactNode;
@@ -7,9 +7,12 @@ type TodoProviderProps = {
 
 type TodoContext = {
     todos: Todo[]
+    value: string
     deleteTodo: (todoId: string) => Promise<void>
     moveCard: (dragIndex: number, hoverIndex: number) => void
-    handleSubmit: (e: FormEvent, value: string) => Promise<void>
+    handleSubmit: (e: FormEvent) => Promise<void>
+    getValue: (value: string) => void
+    handleEditTodo: (todoId: string, value: Payload) => Promise<void>
 }
 
 const TodoContext = createContext({} as TodoContext)
@@ -21,7 +24,16 @@ export const TodoProvider = ({ children }: TodoProviderProps) => {
         isComplete: false
     }])
 
+    const [value, setValue] = useState('')
 
+    const getValue = (value: string) => {
+        setValue(value)
+    }
+
+    const handleEditTodo = async (todoId: string, value: Payload) => {
+        await TodoService.updateTodo(todoId, value)
+        getTodos()
+    }
 
     const getTodos = useCallback(async () => {
         const data = await TodoService.getTodos()
@@ -50,9 +62,10 @@ export const TodoProvider = ({ children }: TodoProviderProps) => {
         [todos]
     );
 
-    const handleSubmit = async (e: FormEvent, value: string) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
         await TodoService.createTodo({ content: value, isComplete: false })
+        setValue('')
         getTodos()
     }
 
@@ -61,7 +74,7 @@ export const TodoProvider = ({ children }: TodoProviderProps) => {
     }, [])
 
     return (
-        <TodoContext.Provider value={{ todos, deleteTodo, moveCard, handleSubmit }}>
+        <TodoContext.Provider value={{ todos, deleteTodo, moveCard, handleSubmit, handleEditTodo, value, getValue }}>
             {children}
         </TodoContext.Provider>
     )

@@ -9,7 +9,7 @@ export const Container = styled.div`
     border-radius: .3rem;
     margin-bottom: .5rem;
     background: white;
-    cursor: 'move';
+    cursor: move;
    filter: drop-shadow(1px 3px 8px #ccc) ; 
    word-break: break-word;
 `;
@@ -22,4 +22,20 @@ export const IconContainer = styled.div`
 `
 export const TextContainer = styled.div`
    width: 100%;
+   cursor: pointer;
 `;
+
+export const EditTodo = styled.div`
+    width: 100%;
+    display: flex;
+    textarea {
+        width: 100%;
+        border: none;
+        resize: none;
+        outline: none;
+        font-size: 1rem;
+    }
+    svg {
+        font-size: 1.2rem;
+    }
+`

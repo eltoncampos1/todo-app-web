@@ -1,7 +1,11 @@
 import styled from 'styled-components';
 
-export const Container = styled.form`
-  max-width: 30rem;
+type Props = {
+    maxWidth: string | number;
+}
+
+export const Container = styled.form<Props>`
+  max-width: ${(props) => props.maxWidth};
   width: 100%;
   height: 5rem;
 

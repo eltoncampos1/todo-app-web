@@ -9,7 +9,7 @@ type TextEditorProps = {
 
 export const TextEditor = ({ onSubmit, onChange, value }: TextEditorProps) => {
     return (
-        <S.Container onSubmit={onSubmit}>
+        <S.Container maxWidth="30rem" onSubmit={onSubmit}>
             <textarea value={value} onChange={onChange} maxLength={50} placeholder='Insira seu conteúdo' name="todo" id="todo" />
             <button type="submit">criar</button>
         </S.Container>

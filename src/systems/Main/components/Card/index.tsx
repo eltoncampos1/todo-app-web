@@ -1,8 +1,10 @@
-import { FC, useRef } from 'react'
-import { FiEdit, FiTrash2 } from 'react-icons/fi'
+import { FC, useRef, useState } from 'react'
+import { FiEdit, FiSave, FiTrash2 } from 'react-icons/fi'
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd'
 import * as S from './styles'
 import { XYCoord } from 'dnd-core'
+import { useTodos } from '../../../../context/todoContext'
+import { Payload } from '../../../../services/todoService'
 
 
 
@@ -12,6 +14,7 @@ export interface CardProps {
     index: number
     moveCard: (dragIndex: number, hoverIndex: number) => void;
     onDelete?: () => void;
+    onSave: () => void;
 }
 
 interface DragItem {
@@ -20,8 +23,10 @@ interface DragItem {
     type: string
 }
 
-export const Card: FC<CardProps> = ({ id, text, index, moveCard, onDelete }) => {
+export const Card: FC<CardProps> = ({ id, text, index, moveCard, onDelete, onSave }) => {
+    const { value, getValue } = useTodos()
     const ref = useRef<HTMLDivElement>(null)
+    const [isClicked, setIsClicked] = useState(false)
     const [{ handlerId }, drop] = useDrop({
         accept: 'CARD',
         collect(monitor) {
@@ -70,16 +75,31 @@ export const Card: FC<CardProps> = ({ id, text, index, moveCard, onDelete }) => 
         }),
     })
 
+    const onCLick = () => {
+        onSave()
+        setIsClicked(!isClicked)
+    }
+
     const opacity = isDragging ? 0 : 1
     drag(drop(ref))
     return (
         <S.Container ref={ref} style={{ opacity }} data-handler-id={handlerId}>
-            <S.TextContainer>
-                <p>  {text}</p>
-            </S.TextContainer>
-            <S.IconContainer>
-                <FiEdit fontSize={18} cursor="pointer" /> <FiTrash2 onClick={onDelete} color='#cc0000' fontSize={18} cursor="pointer" />
-            </S.IconContainer>
+            {!isClicked ?
+                (
+                    <>
+                        <S.TextContainer>
+                            <p> {text}</p>
+                        </S.TextContainer>
+                        <S.IconContainer>
+                            <FiEdit onClick={() => setIsClicked(!isClicked)} fontSize={18} cursor="pointer" />
+                            <FiTrash2 onClick={onDelete} color='#cc0000' fontSize={18} cursor="pointer" />
+                        </S.IconContainer>
+                    </>
+                ) : (
+                    <S.EditTodo >
+                        <textarea onChange={(e) => getValue(e.target.value)} value={value} name="editTodo" id="editTodod" /> <FiSave onClick={onCLick} cursor="pointer" />
+                    </S.EditTodo>
+                )}
         </S.Container>
     )
 }

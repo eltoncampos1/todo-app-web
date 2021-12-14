@@ -9,14 +9,13 @@ import { useTodos } from '../../../../context/todoContext'
 
 
 export const Header = () => {
-    const { handleSubmit } = useTodos()
+    const { handleSubmit, value, getValue } = useTodos()
     const [isVisible, setIsVisible] = useState(true)
-    const [value, setValue] = useState('')
+
 
     const onSubmit = (e: FormEvent) => {
-        handleSubmit(e, value)
+        handleSubmit(e)
         setIsVisible(true)
-        setValue('')
     }
 
     const handleCLick = () => {
@@ -41,7 +40,7 @@ export const Header = () => {
                         <TextEditor
                             onSubmit={(e) => onSubmit(e)}
                             value={value}
-                            onChange={(e) => setValue(e.target.value)}
+                            onChange={(e) => getValue(e.target.value)}
                         />
                     </>
                 )}
