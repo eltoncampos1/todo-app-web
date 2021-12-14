@@ -32,6 +32,7 @@ export const TodoProvider = ({ children }: TodoProviderProps) => {
 
     const handleEditTodo = async (todoId: string, value: Payload) => {
         await TodoService.updateTodo(todoId, value)
+        setValue('')
         getTodos()
     }
 
