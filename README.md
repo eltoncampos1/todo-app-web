@@ -140,7 +140,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-Project Link: [TODO APP](https://github.com/eltoncampos1/todo-app-server)
+Project Link: [TODO APP](https://github.com/eltoncampos1/todo-app-web)
 
 - [LinkedIn](https://www.linkedin.com/in/elton-campos-074015164/)
 - [Email](mailto:eltoncampos36@gmail.com)
